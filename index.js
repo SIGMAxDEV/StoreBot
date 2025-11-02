@@ -5,42 +5,55 @@ const app = express();
 const TOKEN = process.env.BOT_TOKEN;
 const bot = new TelegramBot(TOKEN, { polling: true });
 
-// /start command
-bot.onText(/\/start/, async (msg) => {
+// respond to any message instead of /start
+bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const firstName = msg.from.first_name;
 
-  // 1️⃣ Start animation
-  const sent = await bot.sendMessage(
-    chatId,
-    "⚙️ *Booting profile systems...*\n_▱▱▱▱▱▱▱▱▱▱ 0%_",
-    { parse_mode: "Markdown" }
-  );
+  try {
+    // === 1️⃣ Sticker Animation ===
+    const stickers = [
+      { file: "https://t.me/PIROxSIGMA/170", time: 5000 },
+      { file: "https://t.me/PIROxSIGMA/169", time: 5000 },
+      { file: "https://t.me/PIROxSIGMA/171", time: 3000 },
+    ];
 
-  const steps = [
-    "💾 *Initializing About Me core...*\n_▰▱▱▱▱▱▱▱▱▱ 10%_",
-    "🧠 *Loading creativity modules...*\n_▰▰▱▱▱▱▱▱▱▱ 20%_",
-    "💻 *Activating Web Developer protocols...*\n_▰▰▰▱▱▱▱▱▱▱ 35%_",
-    "⚡ *Powering up Tech Enthusiasm...*\n_▰▰▰▰▱▱▱▱▱▱ 50%_",
-    "🚀 *Building futuristic UI mindset...*\n_▰▰▰▰▰▱▱▱▱▱ 65%_",
-    "🔧 *Optimizing problem-solving engine...*\n_▰▰▰▰▰▰▱▱▱▱ 78%_",
-    "🌐 *Connecting digital dimensions...*\n_▰▰▰▰▰▰▰▱▱▱ 89%_",
-    "💎 *Refining passion & precision...*\n_▰▰▰▰▰▰▰▰▱▱ 95%_",
-    "✅ *Finalizing personal portfolio...*\n_▰▰▰▰▰▰▰▰▰▰ 100%_",
-  ];
+    for (const s of stickers) {
+      const sentSticker = await bot.sendSticker(chatId, s.file);
+      await new Promise((r) => setTimeout(r, s.time));
+      await bot.deleteMessage(chatId, sentSticker.message_id).catch(() => {});
+    }
 
-  // 2️⃣ Animate progress bar
-  for (let i = 0; i < steps.length; i++) {
-    await new Promise((r) => setTimeout(r, 500)); // delay
-    await bot.editMessageText(steps[i], {
-      chat_id: chatId,
-      message_id: sent.message_id,
-      parse_mode: "Markdown",
-    });
-  }
+    // === 2️⃣ Booting Progress Animation ===
+    const sent = await bot.sendMessage(
+      chatId,
+      "⚙️ *Booting profile systems...*\n_▱▱▱▱▱▱▱▱▱▱ 0%_",
+      { parse_mode: "Markdown" }
+    );
 
-  // 3️⃣ After animation, send your main video post
-  const caption = `
+    const steps = [
+      "💾 *Initializing About Me core...*\n_▰▱▱▱▱▱▱▱▱▱ 10%_",
+      "🧠 *Loading creativity modules...*\n_▰▰▱▱▱▱▱▱▱▱ 20%_",
+      "💻 *Activating Web Developer protocols...*\n_▰▰▰▱▱▱▱▱▱▱ 35%_",
+      "⚡ *Powering up Tech Enthusiasm...*\n_▰▰▰▰▱▱▱▱▱▱ 50%_",
+      "🚀 *Building futuristic UI mindset...*\n_▰▰▰▰▰▱▱▱▱▱ 65%_",
+      "🔧 *Optimizing problem-solving engine...*\n_▰▰▰▰▰▰▱▱▱▱ 78%_",
+      "🌐 *Connecting digital dimensions...*\n_▰▰▰▰▰▰▰▱▱▱ 89%_",
+      "💎 *Refining passion & precision...*\n_▰▰▰▰▰▰▰▰▱▱ 95%_",
+      "✅ *Finalizing personal portfolio...*\n_▰▰▰▰▰▰▰▰▰▰ 100%_",
+    ];
+
+    for (let i = 0; i < steps.length; i++) {
+      await new Promise((r) => setTimeout(r, 500));
+      await bot.editMessageText(steps[i], {
+        chat_id: chatId,
+        message_id: sent.message_id,
+        parse_mode: "Markdown",
+      });
+    }
+
+    // === 3️⃣ Replace final message with your main video ===
+    const caption = `
 <b>╔══════════════════════╗</b>
 
 👋 Hey ${firstName}
@@ -72,20 +85,32 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
 ━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
-  // Replace with your video
-  await bot.sendVideo(chatId, "https://t.me/PIROxSIGMA/6", {
-    caption,
-    parse_mode: "HTML",
-    disable_web_page_preview: true,
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: "┇「 ✮ 𝗝ᴏɪɴ 𝗔ʟʟ 𝗧ᴏɢᴇᴛʜᴇʀ ✦ 」┇", url: "https://t.me/addlist/YL8wc0hfre5iMjg9" }],
-      ],
-    },
-  });
+    await bot.editMessageText("🎯 *Profile Boot Complete!*", {
+      chat_id: chatId,
+      message_id: sent.message_id,
+      parse_mode: "Markdown",
+    });
+
+    await bot.sendVideo(chatId, "https://t.me/PIROxSIGMA/6", {
+      caption,
+      parse_mode: "HTML",
+      disable_web_page_preview: true,
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "┇「 ✮ 𝗝ᴏɪɴ 𝗔ʟʟ 𝗧ᴏɢᴇᴛʜᴇʀ ✦ 」┇", url: "https://t.me/addlist/YL8wc0hfre5iMjg9" }],
+        ],
+      },
+    });
+
+    // finally delete the animation message
+    await bot.deleteMessage(chatId, sent.message_id).catch(() => {});
+
+  } catch (err) {
+    console.error("Error in animation sequence:", err);
+  }
 });
 
-// For Render
+// Render keep-alive server
 const PORT = process.env.PORT || 10000;
 app.get("/", (req, res) => res.send("Bot is running!"));
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
