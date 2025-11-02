@@ -1,5 +1,4 @@
-// == Rare Sigma Portfolio Bot (Webhook Stable + Full Animation) ==
-// Reacts on /start → adds random reaction → deletes → plays sticker animation → progress → final video
+// == Rare Sigma Portfolio Bot (Stable Webhook + Animated Effects) ==
 
 const TelegramBot = require("node-telegram-bot-api");
 const express = require("express");
@@ -28,17 +27,29 @@ bot.onText(/\/start/, async (msg) => {
   const user = msg.from.first_name || "User";
 
   try {
-    // 1️⃣ Add random reaction to /start
-    const reactions = ["❤️", "🔥", "👍", "💥", "😎", "🚀"];
-    const emoji = reactions[Math.floor(Math.random() * reactions.length)];
+    // 1️⃣ Random reaction + random message effect
+    const emojis = ["❤️", "🔥", "👍", "💥", "😎", "🚀"];
+    const effects = [
+      "5046589136895476101", // fire-burst
+      "5104841245755180586", // success-like
+      "5044134455711629726", // heart
+      "5046509860389126442", // confetti
+      "5107584321108051014", // thumbs up
+      "5104858069142078462", // thumbs down
+    ];
+
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    const effect = effects[Math.floor(Math.random() * effects.length)];
+
+    await bot.sendMessage(chatId, "🚀 Booting portfolio...", {
+      message_effect_id: effect,
+    });
 
     await bot.setMessageReaction(chatId, msgId, [{ type: "emoji", emoji }]).catch(() => {});
-
-    // Wait 5s, then delete /start message
     await new Promise((r) => setTimeout(r, 5000));
     await bot.deleteMessage(chatId, msgId).catch(() => {});
 
-    // 2️⃣ Sticker Animation (Telegram File URLs work only if file_id extracted)
+    // 2️⃣ Sticker animation (auto delete)
     const stickers = [
       "https://t.me/PIROxSIGMA/168",
       "https://t.me/PIROxSIGMA/170",
@@ -55,8 +66,8 @@ bot.onText(/\/start/, async (msg) => {
       }
     }
 
-    // 3️⃣ Progress Animation
-    const progressSteps = [
+    // 3️⃣ Progress animation
+    const steps = [
       "💾 Initializing... ▱▱▱▱▱▱▱▱▱▱ 0%",
       "🧠 Loading modules... ▰▱▱▱▱▱▱▱▱▱ 10%",
       "💻 Activating protocols... ▰▰▱▱▱▱▱▱▱▱ 25%",
@@ -66,51 +77,52 @@ bot.onText(/\/start/, async (msg) => {
       "✅ Done! ▰▰▰▰▰▰▰▰▰▰ 100%",
     ];
 
-    const progMsg = await bot.sendMessage(chatId, progressSteps[0], { parse_mode: "Markdown" });
-    for (let i = 1; i < progressSteps.length; i++) {
+    const progress = await bot.sendMessage(chatId, steps[0], { parse_mode: "Markdown" });
+    for (let i = 1; i < steps.length; i++) {
       await new Promise((r) => setTimeout(r, 900));
-      await bot.editMessageText(progressSteps[i], {
-        chat_id: chatId,
-        message_id: progMsg.message_id,
-        parse_mode: "Markdown",
-      }).catch(() => {});
+      await bot
+        .editMessageText(steps[i], {
+          chat_id: chatId,
+          message_id: progress.message_id,
+          parse_mode: "Markdown",
+        })
+        .catch(() => {});
     }
 
-    // 4️⃣ Final Video Message
+    // 4️⃣ Final Portfolio Video + Full Caption
     const caption = `
 <b>╔══════════════════════╗</b>
 
 👋 Hey ${user}
 
-<b>⚠️ Educational Purpose Only 🧑‍💻
-Copyright Disclaimer Under Section 107 of the Copyright Act 1976
-🧑‍💻 Contact for advertisement</b>
+<b>⚠️ Tʜɪꜱ ᴄᴏᴍᴍᴜɴɪᴛʏ ɪꜱ ꜰᴏʀ ᴇᴅᴜᴄᴀᴛɪᴏɴᴀʟ ᴀɴᴅ ᴇxᴘᴇʀɪᴍᴇɴᴛᴀʟ ᴘᴜʀᴘᴏꜱᴇꜱ ᴏɴʟʏ 🧑‍💻
+Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏɴ 107 ᴏꜰ ᴛʜᴇ ᴄᴏᴘʏʀɪɢʜᴛ ᴀᴄᴛ 1976 🫧
+🧑‍💻Cᴏɴᴛᴀᴄᴛ ꜰᴏʀ ᴀᴅᴠᴇʀᴛɪꜱᴇᴍᴇɴᴛ</b>
 
 <b>╚══════════════════════╝</b>
 
 <b>🦋 Mᴀɪɴ Cʜᴀɴɴᴇʟ</b>    <b>🦋 Pʀᴇᴍɪᴜᴍ Gᴡʏs</b>
-👉 <a href="https://t.me/+7OoCk9Y1x_s5YjJl">Join</a>      👉 <a href="https://t.me/PiDoxz">Join</a>
+👉 <a href="https://t.me/+7OoCk9Y1x_s5YjJl">Jᴏɪɴ</a>      👉 <a href="https://t.me/PiDoxz">Jᴏɪɴ</a>
 
 <b>🦋 Pᴀɪᴅ Mᴇᴛʜᴏᴅs</b>    <b>🦋 Hᴀᴄᴋɪɴɢ Fɪʟᴇs</b>
-👉 <a href="https://t.me/+dXSBTNIDhTFkNDU9">Join</a>      👉 <a href="https://t.me/+DMwFcoGnkR04YWJl">Join</a>
+👉 <a href="https://t.me/+dXSBTNIDhTFkNDU9">Jᴏɪɴ</a>      👉 <a href="https://t.me/+DMwFcoGnkR04YWJl">Jᴏɪɴ</a>
 
 <b>🦋 Pᴀɪᴅ Cᴏᴜʀsᴇs</b>     <b>🦋 Cʏʙᴇʀ Cʜᴀɴɴᴇʟ</b>
-👉 <a href="https://t.me/+yOFEAk19m-gzNjY9">Join</a>      👉 <a href="https://t.me/+k1dW4uaTemQzYTVl">Join</a>
+👉 <a href="https://t.me/+yOFEAk19m-gzNjY9">Jᴏɪɴ</a>      👉 <a href="https://t.me/+k1dW4uaTemQzYTVl">Jᴏɪɴ</a>
 
 <b>🦋 Nᴇᴛғʟɪx Gᴡʏs</b>      <b>🦋 Pʀɪᴠᴀᴛᴇ Fɪʟᴇs</b>
-👉 <a href="https://t.me/+JDkyCDQY37w0MzU1">Join</a>      👉 <a href="https://t.me/+L0yDlpjz1Gw5NzM1">Join</a>
+👉 <a href="https://t.me/+JDkyCDQY37w0MzU1">Jᴏɪɴ</a>      👉 <a href="https://t.me/+L0yDlpjz1Gw5NzM1">Jᴏɪɴ</a>
 
 <b>🦋 Cʀᴀᴄᴋɪɴɢ Zᴏɴᴇ</b>   <b>🦋 Fʀᴇᴇ Gᴡʏs</b>
-👉 <a href="https://t.me/+wG4Mn0HIOTo0ODQ1">Join</a>      👉 <a href="https://t.me/+_4vpfsysB584Yjdl">Join</a>
+👉 <a href="https://t.me/+wG4Mn0HIOTo0ODQ1">Jᴏɪɴ</a>      👉 <a href="https://t.me/+_4vpfsysB584Yjdl">Jᴏɪɴ</a>
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
-<b>❤‍🩹 <a href="https://t.me/SIGMADOX7">⏤͟͟͞͞⛦ 𓆩 Owner 𓆪</a></b>
-<b>⚡ <a href="https://t.me/ClassySigma">⏤͟͟͞͞⛦ 𓆩 Cowner 𓆪</a></b>
+<b>❤‍🩹 <a href="https://t.me/SIGMADOX7">⏤͟͟͞͞⛦ 𓆩 𝗢ᴡɴᴇʀ 𓆪 </a></b>
+<b>⚡<a href="https://t.me/ClassySigma">⏤͟͟͞͞⛦ 𓆩 𝗖ᴏᴡɴᴇʀ 𓆪 </a></b>
 ━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
-    // Direct video file URL required (t.me links will fail)
-    await bot.sendVideo(chatId, "https://t.me/PIROxSIGMA/6", {
+    await bot.sendVideo(chatId, "https://files.catbox.moe/p8v7n7.mp4", {
       caption,
       parse_mode: "HTML",
       disable_web_page_preview: true,
@@ -119,15 +131,15 @@ Copyright Disclaimer Under Section 107 of the Copyright Act 1976
           [{ text: "┇「 ✮ 𝗝ᴏɪɴ 𝗔ʟʟ 𝗧ᴏɢᴇᴛʜᴇʀ ✦ 」┇", url: "https://t.me/addlist/YL8wc0hfre5iMjg9" }],
         ],
       },
-    }).catch((e) => console.log("⚠️ Video send failed:", e.message));
+    });
 
-    await bot.deleteMessage(chatId, progMsg.message_id).catch(() => {});
+    await bot.deleteMessage(chatId, progress.message_id).catch(() => {});
   } catch (err) {
-    console.error("❌ Error in animation sequence:", err);
-    await bot.sendMessage(chatId, "⚠️ Something went wrong but you are BSDK!");
+    console.error("❌ Error in animation sequence:", err.message);
+    await bot.sendMessage(chatId, "⚠️ Something went wrong but recovered!");
   }
 });
 
-// ─── Render Health Check
-app.get("/", (req, res) => res.send("Bot is running successfully bitchh 👅"));
-console.log(`💋 Server running on your fucking port ${PORT}`);
+// ─── Health Check
+app.get("/", (req, res) => res.send("✅ Bot is running fine."));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
