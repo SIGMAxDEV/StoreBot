@@ -10,7 +10,7 @@ bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
   const firstName = msg.from.first_name;
 
-  // 1️⃣ Send first animation message
+  // 1️⃣ Start animation
   const sent = await bot.sendMessage(
     chatId,
     "⚙️ *Booting profile systems...*\n_▱▱▱▱▱▱▱▱▱▱ 0%_",
@@ -31,7 +31,7 @@ bot.onText(/\/start/, async (msg) => {
 
   // 2️⃣ Animate progress bar
   for (let i = 0; i < steps.length; i++) {
-    await new Promise((r) => setTimeout(r, 500)); // half-second delay
+    await new Promise((r) => setTimeout(r, 500)); // delay
     await bot.editMessageText(steps[i], {
       chat_id: chatId,
       message_id: sent.message_id,
@@ -39,7 +39,7 @@ bot.onText(/\/start/, async (msg) => {
     });
   }
 
-  // 3️⃣ After animation finishes, edit the same message to your main post
+  // 3️⃣ After animation, send your main video post
   const caption = `
 <b>╔════════════════════════╗</b>
 
@@ -72,12 +72,8 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
-  await bot.editMessageText("Uploading final view...", {
-    chat_id: chatId,
-    message_id: sent.message_id,
-  });
-
-  await bot.sendPhoto(chatId, "https://t.me/PIROsx07/5", {
+  // Replace with your video
+  await bot.sendVideo(chatId, "https://t.me/PIROxSIGMA/6", {
     caption,
     parse_mode: "HTML",
     disable_web_page_preview: true,
@@ -89,7 +85,7 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
   });
 });
 
-// Required for Render
+// For Render
 const PORT = process.env.PORT || 10000;
 app.get("/", (req, res) => res.send("Bot is running!"));
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
