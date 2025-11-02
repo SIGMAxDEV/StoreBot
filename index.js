@@ -41,7 +41,7 @@ bot.onText(/\/start/, async (msg) => {
 
   // 3️⃣ After animation, send your main video post
   const caption = `
-<b>╔════════════════════════╗</b>
+<b>╔══════════════════════╗</b>
 
 👋 Hey ${firstName}
 
@@ -49,7 +49,7 @@ bot.onText(/\/start/, async (msg) => {
 Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏɴ 107 ᴏꜰ ᴛʜᴇ ᴄᴏᴘʏʀɪɢʜᴛ ᴀᴄᴛ 1976 🫧
 🧑‍💻Cᴏɴᴛᴀᴄᴛ ꜰᴏʀ ᴀᴅᴠᴇʀᴛɪꜱᴇᴍᴇɴᴛ</b>
 
-<b>╚════════════════════════╝</b>
+<b>╚══════════════════════╝</b>
 
 <b>🦋 Mᴀɪɴ Cʜᴀɴɴᴇʟ</b>    <b>🦋 Pʀᴇᴍɪᴜᴍ Gᴡʏs</b>
 👉 <a href="https://t.me/+7OoCk9Y1x_s5YjJl">Jᴏɪɴ Cʜᴀɴɴᴇʟ</a>      👉 <a href="https://t.me/PiDoxz">Jᴏɪɴ Cʜᴀɴɴᴇʟ</a>
@@ -63,13 +63,13 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
 <b>🦋 Nᴇᴛғʟɪx Gᴡʏs</b>      <b>🦋 Pʀɪᴠᴀᴛᴇ Fɪʟᴇs</b>
 👉 <a href="https://t.me/+JDkyCDQY37w0MzU1">Jᴏɪɴ Cʜᴀɴɴᴇʟ</a>      👉 <a href="https://t.me/+L0yDlpjz1Gw5NzM1">Jᴏɪɴ Cʜᴀɴɴᴇʟ</a>
 
-<b>🦋 Cʀᴀᴄᴋɪɴɢ Zᴏɴᴇ</b>   <b>🦋 𝗙ʀᴇᴇ 𝗚ɪᴠᴇ𝗮𝘄𝗮𝘆𝘀</b>
+<b>🦋 Cʀᴀᴄᴋɪɴɢ Zᴏɴᴇ</b>   <b>🦋 Fʀᴇᴇ Gᴡʏs</b>
 👉 <a href="https://t.me/+wG4Mn0HIOTo0ODQ1">Jᴏɪɴ Cʜᴀɴɴᴇʟ</a>      👉 <a href="https://t.me/+_4vpfsysB584Yjdl">Jᴏɪɴ Cʜᴀɴɴᴇʟ</a>
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━
 <b>❤‍🩹 <a href="https://t.me/SIGMADOX7">⏤͟͟͞͞⛦ 𓆩 𝗢ᴡɴᴇʀ 𓆪 </a></b>
 <b>⚡<a href="https://t.me/ClassySigma">⏤͟͟͞͞⛦ 𓆩 𝗖ᴏᴡɴᴇʀ 𓆪 </a></b>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
   // Replace with your video
