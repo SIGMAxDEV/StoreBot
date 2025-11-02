@@ -11,10 +11,11 @@ const TOKEN = process.env.BOT_TOKEN;
 const URL = process.env.RENDER_EXTERNAL_URL || "https://storebot-3q8w.onrender.com";
 const PORT = process.env.PORT || 3000;
 
-// ─── Initialize Bot (Webhook Mode)
-const bot = new TelegramBot(TOKEN, { webHook: { port: PORT } });
+// ─── Initialize Bot (no port here!)
+const bot = new TelegramBot(TOKEN);
 bot.setWebHook(`${URL}/bot${TOKEN}`);
 
+// ─── Express webhook endpoint
 app.post(`/bot${TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
@@ -30,12 +31,12 @@ bot.onText(/\/start/, async (msg) => {
     // 1️⃣ Random reaction + random message effect
     const emojis = ["❤️", "🔥", "👍", "💥", "😎", "🚀"];
     const effects = [
-      "5046589136895476101", // fire-burst
-      "5104841245755180586", // success-like
-      "5044134455711629726", // heart
-      "5046509860389126442", // confetti
-      "5107584321108051014", // thumbs up
-      "5104858069142078462", // thumbs down
+      "5046589136895476101",
+      "5104841245755180586",
+      "5044134455711629726",
+      "5046509860389126442",
+      "5107584321108051014",
+      "5104858069142078462",
     ];
 
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -68,13 +69,14 @@ bot.onText(/\/start/, async (msg) => {
 
     // 3️⃣ Progress animation
     const steps = [
-      "💾 Initializing... ▱▱▱▱▱▱▱▱▱▱ 0%",
-      "🧠 Loading modules... ▰▱▱▱▱▱▱▱▱▱ 10%",
-      "💻 Activating protocols... ▰▰▱▱▱▱▱▱▱▱ 25%",
-      "⚡ Optimizing engine... ▰▰▰▱▱▱▱▱▱▱ 45%",
-      "🚀 Building interface... ▰▰▰▰▱▱▱▱▱▱ 60%",
-      "💎 Finalizing setup... ▰▰▰▰▰▰▱▱▱▱ 80%",
-      "✅ Done! ▰▰▰▰▰▰▰▰▰▰ 100%",
+      "🌙 Booting up night systems... ▱▱▱▱▱▱▱▱▱▱ 0%",
+      "💫 Linking neural modules... ▰▱▱▱▱▱▱▱▱▱ 15%",
+      "⚙️ Powering dark-core engine... ▰▰▱▱▱▱▱▱▱▱ 30%",
+      "🌌 Syncing data through quantum waves... ▰▰▰▱▱▱▱▱▱▱ 50%",
+      "🔥 Stabilizing reactors... ▰▰▰▰▱▱▱▱▱▱ 65%",
+      "🧩 Merging Sigma protocols... ▰▰▰▰▰▱▱▱▱▱ 80%",
+      "🌃 Final glow calibration... ▰▰▰▰▰▰▰▱▱▱ 90%",
+      "💎 Nightcore ready! ▰▰▰▰▰▰▰▰▰▰ 100%",
     ];
 
     const progress = await bot.sendMessage(chatId, steps[0], { parse_mode: "Markdown" });
@@ -89,7 +91,7 @@ bot.onText(/\/start/, async (msg) => {
         .catch(() => {});
     }
 
-    // 4️⃣ Final Portfolio Video + Full Caption
+    // 4️⃣ Final Portfolio Video + Caption
     const caption = `
 <b>╔══════════════════════╗</b>
 
@@ -104,22 +106,8 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
 <b>🦋 Mᴀɪɴ Cʜᴀɴɴᴇʟ</b>    <b>🦋 Pʀᴇᴍɪᴜᴍ Gᴡʏs</b>
 👉 <a href="https://t.me/+7OoCk9Y1x_s5YjJl">Jᴏɪɴ</a>      👉 <a href="https://t.me/PiDoxz">Jᴏɪɴ</a>
 
-<b>🦋 Pᴀɪᴅ Mᴇᴛʜᴏᴅs</b>    <b>🦋 Hᴀᴄᴋɪɴɢ Fɪʟᴇs</b>
-👉 <a href="https://t.me/+dXSBTNIDhTFkNDU9">Jᴏɪɴ</a>      👉 <a href="https://t.me/+DMwFcoGnkR04YWJl">Jᴏɪɴ</a>
-
-<b>🦋 Pᴀɪᴅ Cᴏᴜʀsᴇs</b>     <b>🦋 Cʏʙᴇʀ Cʜᴀɴɴᴇʟ</b>
-👉 <a href="https://t.me/+yOFEAk19m-gzNjY9">Jᴏɪɴ</a>      👉 <a href="https://t.me/+k1dW4uaTemQzYTVl">Jᴏɪɴ</a>
-
-<b>🦋 Nᴇᴛғʟɪx Gᴡʏs</b>      <b>🦋 Pʀɪᴠᴀᴛᴇ Fɪʟᴇs</b>
-👉 <a href="https://t.me/+JDkyCDQY37w0MzU1">Jᴏɪɴ</a>      👉 <a href="https://t.me/+L0yDlpjz1Gw5NzM1">Jᴏɪɴ</a>
-
-<b>🦋 Cʀᴀᴄᴋɪɴɢ Zᴏɴᴇ</b>   <b>🦋 Fʀᴇᴇ Gᴡʏs</b>
-👉 <a href="https://t.me/+wG4Mn0HIOTo0ODQ1">Jᴏɪɴ</a>      👉 <a href="https://t.me/+_4vpfsysB584Yjdl">Jᴏɪɴ</a>
-
-━━━━━━━━━━━━━━━━━━━━━━━━
 <b>❤‍🩹 <a href="https://t.me/SIGMADOX7">⏤͟͟͞͞⛦ 𓆩 𝗢ᴡɴᴇʀ 𓆪 </a></b>
 <b>⚡<a href="https://t.me/ClassySigma">⏤͟͟͞͞⛦ 𓆩 𝗖ᴏᴡɴᴇʀ 𓆪 </a></b>
-━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
     await bot.sendVideo(chatId, "https://files.catbox.moe/p8v7n7.mp4", {
@@ -142,4 +130,6 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
 
 // ─── Health Check
 app.get("/", (req, res) => res.send("✅ Bot is running fine 😏."));
+
+// ─── Start Express server only once
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
