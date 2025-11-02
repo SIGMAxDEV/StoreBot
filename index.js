@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 const TOKEN = process.env.BOT_TOKEN;
 const URL = process.env.RENDER_EXTERNAL_URL || "https://storebot-3q8w.onrender.com";
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3000;
 
 // ─── Initialize Bot (Webhook Mode)
 const bot = new TelegramBot(TOKEN, { webHook: { port: PORT } });
