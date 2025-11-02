@@ -1,3 +1,6 @@
+// == Rare Sigma Portfolio Bot FINAL ==
+// Reacts to /start, deletes it, runs sticker + loading animation, then shows video
+
 const TelegramBot = require("node-telegram-bot-api");
 const express = require("express");
 const app = express();
@@ -5,17 +8,33 @@ const app = express();
 const TOKEN = process.env.BOT_TOKEN;
 const bot = new TelegramBot(TOKEN, { polling: true });
 
-// respond to any message instead of /start
-bot.on("message", async (msg) => {
+// ───────────────────────────────
+// Respond when user sends /start
+// ───────────────────────────────
+bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
-  const firstName = msg.from.first_name;
+  const userMsgId = msg.message_id;
+  const firstName = msg.from.first_name || "User";
 
   try {
-    // === 1️⃣ Sticker Animation ===
+    // 1️⃣ React to /start message with random emoji
+    const reactions = ["❤️", "🔥", "👍", "💥", "😎", "🚀"];
+    const emoji = reactions[Math.floor(Math.random() * reactions.length)];
+    await bot.setMessageReaction({
+      chat_id: chatId,
+      message_id: userMsgId,
+      reaction: [{ type: "emoji", emoji }],
+    }).catch(() => {});
+
+    // Wait 5 seconds, then delete user’s /start
+    await new Promise((res) => setTimeout(res, 5000));
+    await bot.deleteMessage(chatId, userMsgId).catch(() => {});
+
+    // 2️⃣ Sticker Animation (auto-delete)
     const stickers = [
-      { file: "https://t.me/PIROxSIGMA/170", time: 5000 },
-      { file: "https://t.me/PIROxSIGMA/169", time: 5000 },
-      { file: "https://t.me/PIROxSIGMA/171", time: 3000 },
+      { file: "https://t.me/PIROxSIGMA/168", time: 3500 },
+      { file: "https://t.me/PIROxSIGMA/170", time: 3500 },
+      { file: "https://t.me/PIROxSIGMA/169", time: 3500 },
     ];
 
     for (const s of stickers) {
@@ -24,10 +43,10 @@ bot.on("message", async (msg) => {
       await bot.deleteMessage(chatId, sentSticker.message_id).catch(() => {});
     }
 
-    // === 2️⃣ Booting Progress Animation ===
+    // 3️⃣ Loading Progress
     const sent = await bot.sendMessage(
       chatId,
-      "⚙️ *Booting profile systems...*\n_▱▱▱▱▱▱▱▱▱▱ 0%_",
+      "✅ *Finalizing personal portfolio...*\n_▱▱▱▱▱▱▱▱▱▱ 0%_",
       { parse_mode: "Markdown" }
     );
 
@@ -44,7 +63,7 @@ bot.on("message", async (msg) => {
     ];
 
     for (let i = 0; i < steps.length; i++) {
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((r) => setTimeout(r, 600));
       await bot.editMessageText(steps[i], {
         chat_id: chatId,
         message_id: sent.message_id,
@@ -52,7 +71,7 @@ bot.on("message", async (msg) => {
       });
     }
 
-    // === 3️⃣ Replace final message with your main video ===
+    // 4️⃣ Final Caption and Video
     const caption = `
 <b>╔══════════════════════╗</b>
 
@@ -102,15 +121,17 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
       },
     });
 
-    // finally delete the animation message
+    // Delete the loading message finally
     await bot.deleteMessage(chatId, sent.message_id).catch(() => {});
-
   } catch (err) {
-    console.error("Error in animation sequence:", err);
+    console.error("❌ Error in animation sequence:", err);
+    await bot.sendMessage(chatId, "⚠️ Something went wrong but recovered!");
   }
 });
 
-// Render keep-alive server
+// ───────────────────────────────
+// Keep alive for Render
+// ───────────────────────────────
 const PORT = process.env.PORT || 10000;
-app.get("/", (req, res) => res.send("Bot is running!"));
-app.listen(PORT, () => console.log(`Server started on ${PORT}`));
+app.get("/", (req, res) => res.send("Bot is running successfully."));
+app.listen(PORT, () => console.log(`✅ Server started on port ${PORT}`));
