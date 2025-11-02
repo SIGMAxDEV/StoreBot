@@ -124,10 +124,10 @@ Copyright Disclaimer Under Section 107 of the Copyright Act 1976
     await bot.deleteMessage(chatId, progMsg.message_id).catch(() => {});
   } catch (err) {
     console.error("❌ Error in animation sequence:", err);
-    await bot.sendMessage(chatId, "⚠️ Something went wrong but recovered!");
+    await bot.sendMessage(chatId, "⚠️ Something went wrong but you are BSDK!");
   }
 });
 
 // ─── Render Health Check
-app.get("/", (req, res) => res.send("Bot is running successfully ✅"));
-console.log(`✅ Server running on port ${PORT}`);
+app.get("/", (req, res) => res.send("Bot is running successfully bitchh 👅"));
+console.log(`💋 Server running on your fucking port ${PORT}`);
