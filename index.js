@@ -1,34 +1,42 @@
-// == Rare Sigma Portfolio Bot (Stable Webhook + Animated Effects) ==
+// == @SigmaDox7 Portfolio Bot (Stable Webhook + Animated Effects) ==
+// 👑 Author: SIGMAxOWNER
+// 🌐 Version: 2.0 (Render Stable)
+// 🧠 Description: Animated Telegram Portfolio Bot with emoji reactions, message effects, 
+// auto-sticker animation, dynamic loading progress, and random final video post.
 
+// ─── Import Required Modules ─────────────────────────────────────
 const TelegramBot = require("node-telegram-bot-api");
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
 
+// ─── Express Setup ───────────────────────────────────────────────
+const app = express();
 app.use(bodyParser.json());
 
-const TOKEN = process.env.BOT_TOKEN;
+// ─── Configuration ──────────────────────────────────────────────
+const TOKEN = process.env.BOT_TOKEN; // Set your bot token in Render environment variables
 const URL = process.env.RENDER_EXTERNAL_URL || "https://storebot-3q8w.onrender.com";
 const PORT = process.env.PORT || 10000;
 
-// ─── Initialize Bot (Webhook Mode)
+// ─── Initialize Bot in Webhook Mode ─────────────────────────────
 const bot = new TelegramBot(TOKEN, { webHook: { port: PORT } });
 bot.setWebHook(`${URL}/bot${TOKEN}`);
 
+// ─── Express Route to Handle Webhook Updates ────────────────────
 app.post(`/bot${TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
 
-// ─── /start Command ──────────────────────────────
+// ─── Handle /start Command ──────────────────────────────────────
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
   const msgId = msg.message_id;
   const user = msg.from.first_name || "User";
 
   try {
-    // 1️⃣ Random reaction + random message effect
-    const emojis = ["❤️", "🔥", "👍", "💥", "😎", "🚀"];
+    // 1️⃣ Reaction + Message Effect Setup
+    const emojis = ["❤️", "🔥", "👍", "💥", "😎", "🚀"]; // Random emoji reactions
     const effects = [
       "5046589136895476101", // fire-burst
       "5104841245755180586", // success-like
@@ -41,32 +49,36 @@ bot.onText(/\/start/, async (msg) => {
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
     const effect = effects[Math.floor(Math.random() * effects.length)];
 
-    await bot.sendMessage(chatId, "🚀 Booting portfolio...", {
+    // Send visual boot message with cool effect
+    await bot.sendMessage(chatId, "🚀 Booting Rare Sigma Portfolio...", {
       message_effect_id: effect,
     });
 
+    // React to the user’s /start command
     await bot.setMessageReaction(chatId, msgId, [{ type: "emoji", emoji }]).catch(() => {});
-    await new Promise((r) => setTimeout(r, 5000));
+    await new Promise((r) => setTimeout(r, 5000)); // Wait for 5 seconds
+
+    // Delete the /start command after short delay
     await bot.deleteMessage(chatId, msgId).catch(() => {});
 
-    // 2️⃣ Sticker animation (auto delete)
+    // 2️⃣ Animated Sticker Sequence
     const stickers = [
-      "https://t.me/PIROxSIGMA/168",
       "https://t.me/PIROxSIGMA/170",
       "https://t.me/PIROxSIGMA/169",
+      "https://t.me/PIROxSIGMA/171",
     ];
 
     for (const url of stickers) {
       try {
         const sent = await bot.sendSticker(chatId, url);
-        await new Promise((r) => setTimeout(r, 2500));
+        await new Promise((r) => setTimeout(r, 2500)); // Wait 2.5s
         await bot.deleteMessage(chatId, sent.message_id).catch(() => {});
       } catch (e) {
         console.log("⚠️ Sticker send failed:", e.message);
       }
     }
 
-    // 3️⃣ Progress animation
+    // 3️⃣ Progress Bar Animation
     const steps = [
       "💾 Initializing... ▱▱▱▱▱▱▱▱▱▱ 0%",
       "🧠 Loading modules... ▰▱▱▱▱▱▱▱▱▱ 10%",
@@ -74,12 +86,12 @@ bot.onText(/\/start/, async (msg) => {
       "⚡ Optimizing engine... ▰▰▰▱▱▱▱▱▱▱ 45%",
       "🚀 Building interface... ▰▰▰▰▱▱▱▱▱▱ 60%",
       "💎 Finalizing setup... ▰▰▰▰▰▰▱▱▱▱ 80%",
-      "✅ Done! ▰▰▰▰▰▰▰▰▰▰ 100%",
+      "✅ Finalizing personal portfolio... ▰▰▰▰▰▰▰▰▰▰ 100%",
     ];
 
     const progress = await bot.sendMessage(chatId, steps[0], { parse_mode: "Markdown" });
     for (let i = 1; i < steps.length; i++) {
-      await new Promise((r) => setTimeout(r, 900));
+      await new Promise((r) => setTimeout(r, 900)); // Animation delay
       await bot
         .editMessageText(steps[i], {
           chat_id: chatId,
@@ -89,7 +101,18 @@ bot.onText(/\/start/, async (msg) => {
         .catch(() => {});
     }
 
-    // 4️⃣ Final Portfolio Video + Full Caption
+    // 4️⃣ Random Portfolio Video + Final Post
+    const videos = [
+      "https://t.me/PIROxSIGMA/76",
+      "https://t.me/PIROxSIGMA/77",
+      "https://t.me/PIROxSIGMA/69",
+      "https://t.me/PIROxSIGMA/70",
+      "https://t.me/PIROxSIGMA/52",
+      "https://t.me/PIROxSIGMA/6",
+      "https://t.me/PIROxSIGMA/157",
+    ];
+    const selectedVideo = videos[Math.floor(Math.random() * videos.length)];
+
     const caption = `
 <b>╔══════════════════════╗</b>
 
@@ -122,17 +145,24 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
 ━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
-    await bot.sendVideo(chatId, "https://files.catbox.moe/p8v7n7.mp4", {
+    // Send the video as final main content
+    await bot.sendVideo(chatId, selectedVideo, {
       caption,
       parse_mode: "HTML",
       disable_web_page_preview: true,
       reply_markup: {
         inline_keyboard: [
-          [{ text: "┇「 ✮ 𝗝ᴏɪɴ 𝗔ʟʟ 𝗧ᴏɢᴇᴛʜᴇʀ ✦ 」┇", url: "https://t.me/addlist/YL8wc0hfre5iMjg9" }],
+          [
+            {
+              text: "┇「 ✮ 𝗝ᴏɪɴ 𝗔ʟʟ 𝗧ᴏɢᴇᴛʜᴇʀ ✦ 」┇",
+              url: "https://t.me/addlist/YL8wc0hfre5iMjg9",
+            },
+          ],
         ],
       },
     });
 
+    // Delete the progress message after completion
     await bot.deleteMessage(chatId, progress.message_id).catch(() => {});
   } catch (err) {
     console.error("❌ Error in animation sequence:", err.message);
@@ -140,6 +170,6 @@ Cᴏᴘʏʀɪɢʜᴛ ᴅɪꜱᴄʟᴀɪᴍᴇʀ ᴜɴᴅᴇʀ ꜱᴇᴄᴛɪᴏ�
   }
 });
 
-// ─── Health Check
+// ─── Health Check Endpoint ─────────────────────────────────────
 app.get("/", (req, res) => res.send("✅ Bot is running fine."));
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
