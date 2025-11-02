@@ -1,0 +1,14 @@
+{
+  "name": "file-storage-bot",
+  "version": "1.0.0",
+  "description": "Telegram File Storage Bot by Ayu",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0",
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
+  }
+}
