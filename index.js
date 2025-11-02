@@ -1,46 +1,43 @@
-import TelegramBot from "node-telegram-bot-api";
-import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
-
-const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
+// index.js
+const TelegramBot = require("node-telegram-bot-api");
+const express = require("express");
 const app = express();
-app.use(express.json());
 
-// In-memory storage (for now)
-let fileStore = {};
+const TOKEN = process.env.BOT_TOKEN;
+const bot = new TelegramBot(TOKEN, { polling: true });
 
-// 📦 Save any file user sends
-bot.on("message", async (msg) => {
-  if (msg.document || msg.video || msg.photo) {
-    const file =
-      msg.document || msg.video || (msg.photo && msg.photo.pop());
-    const fileId = file.file_id;
-    const uniqueId = Math.random().toString(36).substring(2, 10);
-    fileStore[uniqueId] = fileId;
+bot.onText(/\/start/, async (msg) => {
+  const chatId = msg.chat.id;
 
-    await bot.sendMessage(
-      msg.chat.id,
-      `✅ File saved!\n\n🔗 Share link:\nhttps://${process.env.RENDER_URL}/file/${uniqueId}`
-    );
+  // send first message
+  const sent = await bot.sendMessage(chatId, "⚙️ *Booting profile systems...*\n_▱▱▱▱▱▱▱▱▱▱ 0%_", {
+    parse_mode: "Markdown",
+  });
+
+  const steps = [
+    "💾 *Initializing About Me core...*\n_▰▱▱▱▱▱▱▱▱▱ 10%_",
+    "🧠 *Loading creativity modules...*\n_▰▰▱▱▱▱▱▱▱▱ 20%_",
+    "💻 *Activating Web Developer protocols...*\n_▰▰▰▱▱▱▱▱▱▱ 35%_",
+    "⚡ *Powering up Tech Enthusiasm...*\n_▰▰▰▰▱▱▱▱▱▱ 50%_",
+    "🚀 *Building futuristic UI mindset...*\n_▰▰▰▰▰▱▱▱▱▱ 65%_",
+    "🔧 *Optimizing problem-solving engine...*\n_▰▰▰▰▰▰▱▱▱▱ 78%_",
+    "🌐 *Connecting digital dimensions...*\n_▰▰▰▰▰▰▰▱▱▱ 89%_",
+    "💎 *Refining passion & precision...*\n_▰▰▰▰▰▰▰▰▱▱ 95%_",
+    "✅ *Finalizing personal portfolio...*\n_▰▰▰▰▰▰▰▰▰▰ 100%_",
+    "🎯 *Profile Boot Complete!*\n✨ *Meet Ayu — Web Developer & Tech Enthusiast 🚀*",
+  ];
+
+  for (const step of steps) {
+    await new Promise((r) => setTimeout(r, 1000)); // delay 1 sec
+    await bot.editMessageText(step, {
+      chat_id: chatId,
+      message_id: sent.message_id,
+      parse_mode: "Markdown",
+    });
   }
 });
 
-// 🌐 Web endpoint to send file
-app.get("/file/:id", async (req, res) => {
-  const id = req.params.id;
-  const fileId = fileStore[id];
-  if (!fileId) return res.send("❌ File not found");
-
-  // Send the file via bot to the user (you can change chat_id)
-  await bot.sendMessage(process.env.OWNER_ID, "📤 Someone opened the link!");
-  await bot.sendDocument(process.env.OWNER_ID, fileId);
-  res.send("✅ File sent via bot!");
-});
-
-// Keep server alive
-app.get("/", (req, res) => {
-  res.send("File Storage Bot by Ayu is running 🚀");
-});
-
-app.listen(10000, () => console.log("Server started"));
+// keep Render alive
+const PORT = process.env.PORT || 10000;
+app.get("/", (req, res) => res.send("Bot is running!"));
+app.listen(PORT, () => console.log(`Server started on ${PORT}`));
